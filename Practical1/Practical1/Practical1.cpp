@@ -88,11 +88,21 @@ int random_number()
 	return e();
 }
 
-void get_min_max(vector<int> allNumbers, int min, int max)
+void get_min_max(vector<int> allNumbers, int *min, int *max)
 {
-	min = *min_element(allNumbers.begin(), allNumbers.end());
-	max = *max_element(allNumbers.begin(), allNumbers.end());
+	*min = *min_element(allNumbers.begin(), allNumbers.end());
+	*max = *max_element(allNumbers.begin(), allNumbers.end());
 }
+
+//int get_max(vector<int> allNumbers)
+//{
+//	return  *max_element(allNumbers.begin(), allNumbers.end());
+//}
+//
+//int get_min(vector<int> allNumbers)
+//{
+//	return  *min_element(allNumbers.begin(), allNumbers.end());
+//}
 
 int main()
 {
@@ -151,50 +161,61 @@ int main()
 
 	// 1
 
-	//ofstream data("excercise1.csv", ofstream::out);
+	ofstream data("excercise1.csv", ofstream::out);
 
 	vector<int> allNumbers;
 
-	for (unsigned int n = 0; n < 10; n++)
+	//int max = 0;
+	//int min = 0;
+
+	for (unsigned int n = 0; n < 100; n++)
 	{
 		int rand = random_number();
 		allNumbers.push_back(rand);
 		//cout << rand << endl;
 	}
 
+	/*get_min_max(allNumbers, min, max);
+	cout << "Max before: " << max << endl;
+	cout << "Min before: " << min << endl;
 
-	/*for (unsigned int num_threads = 1; num_threads <= 6; num_threads++)
+	min = get_min(allNumbers);
+	cout << "Min after: " << min << endl;
+	max = get_max(allNumbers);
+	cout << "Max after: " << max << endl;*/
+
+	for (unsigned int num_threads = 1; num_threads <= 6; num_threads++)
 		{
 			auto total_threads = static_cast<unsigned int>(pow(2.0, num_threads));
 			cout << "Number of threads = " << total_threads << endl;
 			data << "num_threads_ " << total_threads;
 
-			int mymin = 0;
-			int mymax = 0;
+			int mymin;
+			int mymax;
 
 			auto start = system_clock::now();
 			vector<thread> threads;
 
 			for (unsigned int n = 0; n < total_threads; n++)
 			{
-				threads.push_back(thread(get_min_max, allNumbers, mymin, mymax));
+				threads.push_back(thread(get_min_max, allNumbers, &mymin, &mymax));
 			}
 
 			for (auto &t : threads)
 			{
 				t.join();
 			}
+
 			data << ", " << "MIN = "<< mymin << endl;
 			data << ", " << "MAX = " << mymax << endl;
-				auto end = system_clock::now();
-				auto total = end - start;
-				data << ", " << duration_cast<milliseconds>(total).count() << endl;
-				data << endl;
-			}
+			auto end = system_clock::now();
+			auto total = end - start;
+			data << ", " << duration_cast<nanoseconds>(total).count() << endl;
+			data << endl;
 
-			
-		
-		data.close();*/
+		}
+
+		data.close();
 
 	
     return 0;

@@ -1,24 +1,24 @@
-num_threads_ 2, MIN = 0
-, MAX = 0
-, 5
+num_threads_ 2, MIN = 574063107
+, MAX = 574063107
+, 1170100
 
-num_threads_ 4, MIN = 0
-, MAX = 0
-, 1
+num_threads_ 4, MIN = 574063107
+, MAX = 574063107
+, 322000
 
-num_threads_ 8, MIN = 0
-, MAX = 0
-, 2
+num_threads_ 8, MIN = 574063107
+, MAX = 574063107
+, 509200
 
-num_threads_ 16, MIN = 0
-, MAX = 0
-, 4
+num_threads_ 16, MIN = 574063107
+, MAX = 574063107
+, 897500
 
-num_threads_ 32, MIN = 0
-, MAX = 0
-, 8
+num_threads_ 32, MIN = 574063107
+, MAX = 574063107
+, 1913000
 
-num_threads_ 64, MIN = 0
-, MAX = 0
-, 27
+num_threads_ 64, MIN = 574063107
+, MAX = 574063107
+, 4900100
 
