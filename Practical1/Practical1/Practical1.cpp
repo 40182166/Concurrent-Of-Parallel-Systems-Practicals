@@ -7,12 +7,15 @@
 #include <chrono>
 #include <random>
 #include <functional>
+#include <fstream>
 
 using namespace std;
 using namespace std::chrono;
 using namespace std::this_thread;
 
-const int num_threads = 100;
+//const int num_threads = 100;
+
+
 
 void task_one()
 {
@@ -43,10 +46,156 @@ void task(int n, int val)
 	cout << "Thread: " << n << " Random Value: " << val << endl;
 }
 
+void work()
+{
+	int n = 0;
+	for (int i = 0; i < 1000000; i++)
+	{
+		n++;
+	}
+		
+
+}
+
+void monte_carlo_pi(unsigned int iterations)
+{
+	auto millis = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+	default_random_engine e(millis.count());
+	uniform_real_distribution<double> distribution(0.0, 1.0);
+
+	unsigned int in_circle = 0;
+
+	for (unsigned int i = 0; i < iterations; i++)
+	{
+		auto x = distribution(e);
+		auto y = distribution(e);
+
+		//Get length of vector with Pythagarous
+		auto lenght = sqrt((x * x) + (y * y));
+
+		if (lenght <= 1.0)
+			in_circle++;
+	}
+
+	auto pi = (4.0 * in_circle) / static_cast<double>(iterations);
+}
+
+int random_number()
+{
+	auto millis = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+	default_random_engine e(static_cast<int>(millis.count()));
+
+	return e();
+}
+
+void get_min_max(vector<int> allNumbers, int min, int max)
+{
+	min = *min_element(allNumbers.begin(), allNumbers.end());
+	max = *max_element(allNumbers.begin(), allNumbers.end());
+}
+
 int main()
 {
-	thread t([] {cout << "hello from lambda thread!" << endl; });
-	t.join();
+	/*ofstream data("data.csv", ofstream::out);
+
+	for (int i = 0; i < 100; i++)
+	{
+		auto start = system_clock::now();
+
+		thread t(work);
+		t.join();
+
+		auto end = system_clock::now();
+		auto total = end - start;
+		data << duration_cast<milliseconds>(total).count() << endl;
+	}
+
+	data.close();*/
+
+	////////////////////////////////////////// ------ MONTE CARLO ------ //////////////////////////////
+
+	//ofstream data("montecarlo.csv", ofstream::out);
+
+	//for (unsigned int num_threads = 1; num_threads <= 6; num_threads++)
+	//{
+	//	auto total_threads = static_cast<unsigned int>(pow(2.0, num_threads));
+	//	cout << "Number of threads = " << total_threads << endl;
+	//	data << "num_threads_ " << total_threads;
+
+	//	for (unsigned int iters = 0; iters < 10; iters++)
+	//	{
+	//		auto start = system_clock::now();
+	//		cout << iters << endl;
+	//		vector<thread> threads;
+
+	//		for (unsigned int n = 0; n < total_threads; n++)
+	//		{
+	//			threads.push_back(thread(monte_carlo_pi, static_cast<unsigned int>(pow(2.0, 24.0 - num_threads))));
+	//		}
+
+	//		for (auto &t : threads)
+	//		{
+	//			t.join();
+	//		}
+	//		
+	//		auto end = system_clock::now();
+	//		auto total = end - start;
+	//		data << ", " << duration_cast<milliseconds>(total).count() << endl;
+	//	}
+
+	//	data << endl;
+	//}
+	//data.close();
+
+	//////////////// Excercises ////////////////
+
+	// 1
+
+	//ofstream data("excercise1.csv", ofstream::out);
+
+	vector<int> allNumbers;
+
+	for (unsigned int n = 0; n < 10; n++)
+	{
+		int rand = random_number();
+		allNumbers.push_back(rand);
+		//cout << rand << endl;
+	}
+
+
+	/*for (unsigned int num_threads = 1; num_threads <= 6; num_threads++)
+		{
+			auto total_threads = static_cast<unsigned int>(pow(2.0, num_threads));
+			cout << "Number of threads = " << total_threads << endl;
+			data << "num_threads_ " << total_threads;
+
+			int mymin = 0;
+			int mymax = 0;
+
+			auto start = system_clock::now();
+			vector<thread> threads;
+
+			for (unsigned int n = 0; n < total_threads; n++)
+			{
+				threads.push_back(thread(get_min_max, allNumbers, mymin, mymax));
+			}
+
+			for (auto &t : threads)
+			{
+				t.join();
+			}
+			data << ", " << "MIN = "<< mymin << endl;
+			data << ", " << "MAX = " << mymax << endl;
+				auto end = system_clock::now();
+				auto total = end - start;
+				data << ", " << duration_cast<milliseconds>(total).count() << endl;
+				data << endl;
+			}
+
+			
+		
+		data.close();*/
+
 	
     return 0;
 }
