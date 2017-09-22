@@ -90,8 +90,9 @@ int random_number()
 
 void get_min_max(vector<int> allNumbers, int *min, int *max)
 {
-	*min = *min_element(allNumbers.begin(), allNumbers.end());
-	*max = *max_element(allNumbers.begin(), allNumbers.end());
+	auto minMax = minmax_element(allNumbers.begin(), allNumbers.end());
+	*min = *minMax.first;
+	*max = *minMax.second;
 }
 
 //int get_max(vector<int> allNumbers)
@@ -205,6 +206,8 @@ int main()
 			{
 				t.join();
 			}
+			cout << "MIN = " << mymin << endl;
+			cout << "MAX = " << mymax << endl;
 
 			data << ", " << "MIN = "<< mymin << endl;
 			data << ", " << "MAX = " << mymax << endl;
