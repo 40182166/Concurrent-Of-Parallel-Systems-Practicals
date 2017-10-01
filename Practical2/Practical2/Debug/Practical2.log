@@ -1,7 +1,4 @@
-﻿  threadsafe_stack.cpp
-  Generating Code...
-  Compiling...
-  Practical2.cpp
-  Generating Code...
-  Practical2.vcxproj -> C:\Users\40182166\Documents\Concurrent-Of-Parallel-Systems-Practicals\Practical2\Debug\Practical2.exe
-  Practical2.vcxproj -> C:\Users\40182166\Documents\Concurrent-Of-Parallel-Systems-Practicals\Practical2\Debug\Practical2.pdb (Partial PDB)
+﻿  Practical2.cpp
+f:\desktop\università\year 4\concurrent of parrallel systems\practicals\practical2\practical2\practical2.cpp(214): warning C4551: function call missing argument list
+  Practical2.vcxproj -> F:\Desktop\Università\Year 4\Concurrent of Parrallel Systems\Practicals\Practical2\Debug\Practical2.exe
+  Practical2.vcxproj -> F:\Desktop\Università\Year 4\Concurrent of Parrallel Systems\Practicals\Practical2\Debug\Practical2.pdb (Partial PDB)
