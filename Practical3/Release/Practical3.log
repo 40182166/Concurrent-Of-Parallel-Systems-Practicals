@@ -1,0 +1,10 @@
+﻿  stdafx.cpp
+  Practical3.cpp
+Practical3.cpp(68): warning C4018: '<': signed/unsigned mismatch
+Practical3.cpp(73): warning C4018: '<': signed/unsigned mismatch
+Practical3.cpp(86): warning C4018: '<': signed/unsigned mismatch
+  Generating code
+  All 212 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  Practical3.vcxproj -> C:\Users\40182166\Documents\GitHub\Concurrent-Of-Parallel-Systems-Practicals\Practical3\Release\Practical3.exe
+  Practical3.vcxproj -> C:\Users\40182166\Documents\GitHub\Concurrent-Of-Parallel-Systems-Practicals\Practical3\Release\Practical3.pdb (Full PDB)

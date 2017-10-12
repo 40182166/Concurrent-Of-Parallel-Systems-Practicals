@@ -10,7 +10,10 @@
 #include <chrono>
 #include <random>
 #include <functional>
+#include <cmath>
+#include <math.h>
 #include <fstream>
+#define _USE_MATH_DEFINES
 
 using namespace std;
 using namespace std::chrono;
@@ -65,7 +68,7 @@ void parallel_sort(vector<unsigned int>& values)
 	int i, tmp, phase;
 
 #pragma omp parallel num_threads(num_threads) default(none) shared(values, n) private(i, tmp, phase)
-	for (phase = 0; phase < n; phase++)
+	for (phase = 0; phase < n; ++phase)
 	{
 		if (phase % 2 == 0)
 		{
@@ -94,6 +97,30 @@ void parallel_sort(vector<unsigned int>& values)
 			}
 		}
 	}
+}
+
+void trap(function<double(double)> f, double start, double end, unsigned int iterations, shared_ptr<double> p)
+{
+	auto my_rank = omp_get_thread_num();
+	auto thread_count = omp_get_num_threads();
+	auto slice_size = (end - start) / iterations;
+	auto iterations_thread = iterations / thread_count;
+	auto local_start = start + ((my_rank * iterations_thread) * slice_size);
+	auto local_end = local_start + iterations_thread * slice_size;
+	auto my_result = (f(local_start) + f(local_end)) / 2.0;
+
+	double x;
+
+	for (unsigned int i = 0; i <= iterations_thread - 1; i++)
+	{
+		x = local_start + i * slice_size;
+		my_result += f(x);
+	}
+
+	my_result *= slice_size;
+
+#pragma omp critical
+	*p += my_result;
 }
 
 int main()
@@ -183,32 +210,48 @@ int main()
 	//	cout << d << endl;
 	//}
 
-	//////////////// ------------ 3.4 Parallel Sort ------------ ////////////////
+	//////////////// ------------ 3.4 Parallel Sort ------------ //////////////// DOESN'T WORK
 
-	ofstream results("parallel.csv", ofstream::out);
+	//ofstream results("parallel.csv", ofstream::out);
 
-	for (unsigned int size = 8; size <= 16; size++)
-	{
-		results << pow(2, size) << ", ";
-		for (unsigned int i = 0; i < 100; i++)
-		{
-			cout << "Generating " << i << " for " << pow(2, size) << " values" << endl;
-			auto data = generate_values(static_cast<unsigned int>(pow(2, size)));
+	//for (unsigned int size = 8; size <= 16; size++)
+	//{
+	//	results << pow(2, size) << ", ";
+	//	for (unsigned int i = 0; i < 100; i++)
+	//	{
+	//		cout << "Generating " << i << " for " << pow(2, size) << " values" << endl;
+	//		auto data = generate_values(static_cast<unsigned int>(pow(4, size)));
 
-			cout << "Sorting" << endl;
+	//		cout << "Sorting" << endl;
 
-			auto start = system_clock::now();
-			parallel_sort(data);
-			auto end = system_clock::now();
+	//		auto start = system_clock::now();
+	//		parallel_sort(data);
+	//		auto end = system_clock::now();
 
-			auto total = duration_cast<milliseconds>(end - start).count();
+	//		auto total = duration_cast<milliseconds>(end - start).count();
 
-			results << total << " , ";
-		}
-		results << endl;
-	}
-	results.close();
+	//		results << total << " , ";
+	//	}
+	//	results << endl;
+	//}
+	//results.close();
 
+
+	//////////////// ------------ 3.5 Trapezoidal Rule ------------ ////////////////
+
+	auto result = make_shared<double>(0.0);
+	auto start = 0.0;
+	auto end = 3.14159265358;
+
+	unsigned int trapezoids = static_cast<unsigned int>(pow(2, 24));
+	auto thread_count = thread::hardware_concurrency();
+
+	auto f = [](double x) { return cos(x); };
+
+#pragma omp parallel num_threads(thread_count) 
+	trap(f, start, end, trapezoids, result);
+	cout << "Using " << trapezoids << " trapezoids. ";
+	cout << "Estimated integral of function " << start << " to " << end << " = " << *result << endl;
 
     return 0;
 }
