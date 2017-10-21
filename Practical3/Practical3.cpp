@@ -123,6 +123,21 @@ void trap(function<double(double)> f, double start, double end, unsigned int ite
 	*p += my_result;
 }
 
+double f(unsigned int i)
+{
+	auto start = i * (i + 1) / 2;
+	auto end = start + i;
+
+	auto result = 0.0;
+
+	for (auto j = start; j <= end; j++)
+	{
+		result += sin(j);
+	}
+
+	return result;
+}
+
 int main()
 {
 
@@ -239,19 +254,38 @@ int main()
 
 	//////////////// ------------ 3.5 Trapezoidal Rule ------------ ////////////////
 
-	auto result = make_shared<double>(0.0);
-	auto start = 0.0;
-	auto end = 3.14159265358;
+//	auto result = make_shared<double>(0.0);
+//	auto start = 0.0;
+//	auto end = 3.14159265358;
+//
+//	unsigned int trapezoids = static_cast<unsigned int>(pow(2, 24));
+//	auto thread_count = thread::hardware_concurrency();
+//
+//	auto f = [](double x) { return cos(x); };
+//
+//#pragma omp parallel num_threads(thread_count) 
+//	trap(f, start, end, trapezoids, result);
+//	cout << "Using " << trapezoids << " trapezoids. ";
+//	cout << "Estimated integral of function " << start << " to " << end << " = " << *result << endl;
 
-	unsigned int trapezoids = static_cast<unsigned int>(pow(2, 24));
+	//////////////// ------------ 3.6 Scheduling ------------ ////////////////
+
 	auto thread_count = thread::hardware_concurrency();
+	int n = static_cast<int>(pow(2, 14));
+	auto start = system_clock::now();
+	auto sum = 0.0;
 
-	auto f = [](double x) { return cos(x); };
+#pragma omp parallel for num_threads(thread_count) reduction(+:sum) schedule(static, 1)
+	for (auto i = 0; i <= n; i++)
+	{
+		sum += f(i);
+	}
 
-#pragma omp parallel num_threads(thread_count) 
-	trap(f, start, end, trapezoids, result);
-	cout << "Using " << trapezoids << " trapezoids. ";
-	cout << "Estimated integral of function " << start << " to " << end << " = " << *result << endl;
+	auto end = system_clock::now();
+
+	auto total = duration_cast<milliseconds>(end - start).count();
+
+	cout << "total time: " << total << "ms" << endl;
 
     return 0;
 }

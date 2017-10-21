@@ -1,6 +1,7 @@
 ﻿  Practical3.cpp
-c:\users\40182166\documents\github\concurrent-of-parallel-systems-practicals\practical3\practical3.cpp(71): warning C4018: '<': signed/unsigned mismatch
-c:\users\40182166\documents\github\concurrent-of-parallel-systems-practicals\practical3\practical3.cpp(76): warning C4018: '<': signed/unsigned mismatch
-c:\users\40182166\documents\github\concurrent-of-parallel-systems-practicals\practical3\practical3.cpp(89): warning C4018: '<': signed/unsigned mismatch
-  Practical3.vcxproj -> C:\Users\40182166\Documents\GitHub\Concurrent-Of-Parallel-Systems-Practicals\Practical3\Debug\Practical3.exe
-  Practical3.vcxproj -> C:\Users\40182166\Documents\GitHub\Concurrent-Of-Parallel-Systems-Practicals\Practical3\Debug\Practical3.pdb (Partial PDB)
+f:\desktop\università\year 4\concurrent of parrallel systems\practicals\practical3\practical3.cpp(71): warning C4018: '<': signed/unsigned mismatch
+f:\desktop\università\year 4\concurrent of parrallel systems\practicals\practical3\practical3.cpp(76): warning C4018: '<': signed/unsigned mismatch
+f:\desktop\università\year 4\concurrent of parrallel systems\practicals\practical3\practical3.cpp(89): warning C4018: '<': signed/unsigned mismatch
+  LINK : F:\Desktop\Università\Year 4\Concurrent of Parrallel Systems\Practicals\Practical3\Debug\Practical3.exe not found or not built by the last incremental link; performing full link
+  Practical3.vcxproj -> F:\Desktop\Università\Year 4\Concurrent of Parrallel Systems\Practicals\Practical3\Debug\Practical3.exe
+  Practical3.vcxproj -> F:\Desktop\Università\Year 4\Concurrent of Parrallel Systems\Practicals\Practical3\Debug\Practical3.pdb (Partial PDB)
