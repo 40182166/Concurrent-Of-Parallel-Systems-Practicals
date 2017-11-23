@@ -29,24 +29,6 @@ void generate_data(float* data, unsigned int num_values)
 	}
 }
 
-void normalise_Vector(__m128* data, __m128* result, unsigned int num_vectors)
-{
-	for(unsigned int i = 0; i < num_vectors; ++i)
-	{
-		result[i] = _mm_mul_ps(data[i], data[i]);	//getting data^2
-
-		//Calculate sum of components and store in all
-		result[i].m128_f32[0] = result[i].m128_f32[1] = result[i].m128_f32[2] = result[i].m128_f32[3] =
-			result[i].m128_f32[0] + result[i].m128_f32[1] + result[i].m128_f32[2] + result[i].m128_f32[3];
-		//calculate recipricol square root of values
-		//it is like doing 1.0f / sqrt(value)
-		result[i] = _mm_rsqrt_ps(result[i]);
-
-		//multiply result by original data --> no need to divide as we already have the recipricol
-		result[i] = _mm_mul_ps(data[i], result[i]);
-	}
-}
-
 void check_results(__m128* data, __m128* result)
 {
 	auto float_data = (float*)data;
@@ -64,8 +46,84 @@ void check_results(__m128* data, __m128* result)
 
 		for (unsigned int j = 0; j < 4; j++)
 		{
-			cout << float_data[(i * 4) + j] / l << " : " << float_res[(i * 4) + j] << endl;
+			//cout << float_data[(i * 4) + j] / l << " : " << float_res[(i * 4) + j] << endl;
 		}
+	}
+}
+
+void normalise_Vector(__m128* data, __m128* result, unsigned int num_vectors)
+{
+	for (unsigned int i = 0; i < num_vectors; ++i)
+	{
+		result[i] = _mm_mul_ps(data[i], data[i]);	//getting data^2
+
+													//Calculate sum of components and store in all
+		result[i].m128_f32[0] = result[i].m128_f32[1] = result[i].m128_f32[2] = result[i].m128_f32[3] =
+			result[i].m128_f32[0] + result[i].m128_f32[1] + result[i].m128_f32[2] + result[i].m128_f32[3];
+		//calculate recipricol square root of values
+		//it is like doing 1.0f / sqrt(value)
+		result[i] = _mm_rsqrt_ps(result[i]);
+
+		//multiply result by original data --> no need to divide as we already have the recipricol
+		result[i] = _mm_mul_ps(data[i], result[i]);
+	}
+}
+
+
+void generate_dataOMP(float* data, unsigned int num_values)
+{
+	//random engine
+	auto millis = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+	default_random_engine e(static_cast<unsigned int>(millis.count()));
+
+	//filling data
+#pragma omp parallel for
+	for (int i = 0; i < num_values; ++i)
+	{
+		data[i] = e();
+	}
+}
+
+void check_resultsOMP(__m128* data, __m128* result)
+{
+	auto float_data = (float*)data;
+	auto float_res = (float*)result;
+
+#pragma omp parallel for
+	for (int i = 0; i < 100; ++i)
+	{
+		float l = 0.0f;
+		//squre each component and add to 1
+#pragma omp parallel for
+		for (int j = 0; j < 4; ++j)
+		{
+			l += powf(float_data[(i * 4) + j], 2.0f);
+		}
+		l = sqrtf(l);
+#pragma omp parallel for
+		for (int j = 0; j < 4; j++)
+		{
+			//cout << float_data[(i * 4) + j] / l << " : " << float_res[(i * 4) + j] << endl;
+		}
+	}
+}
+
+void normalise_VectorOMP(__m128* data, __m128* result, unsigned int num_vectors)
+{
+#pragma omp parallel for
+	for (int i = 0; i < num_vectors; ++i)
+	{
+		result[i] = _mm_mul_ps(data[i], data[i]);	//getting data^2
+
+													//Calculate sum of components and store in all
+		result[i].m128_f32[0] = result[i].m128_f32[1] = result[i].m128_f32[2] = result[i].m128_f32[3] =
+			result[i].m128_f32[0] + result[i].m128_f32[1] + result[i].m128_f32[2] + result[i].m128_f32[3];
+		//calculate recipricol square root of values
+		//it is like doing 1.0f / sqrt(value)
+		result[i] = _mm_rsqrt_ps(result[i]);
+
+		//multiply result by original data --> no need to divide as we already have the recipricol
+		result[i] = _mm_mul_ps(data[i], result[i]);
 	}
 }
 
@@ -164,7 +222,38 @@ int main()
 
 /// ---------------------------------------------- NORMALIZING A VECTOR ---------------------------------------------- ///
 
+	auto data = (float*)_aligned_malloc(SIZE * sizeof(float), 16);
+	auto result = (float*)_aligned_malloc(SIZE * sizeof(float), 16);
 
+	auto stream_data = (__m128*) data;
+	auto stream_res = (__m128*) result;
+
+	auto start = high_resolution_clock::now();
+
+	generate_data(data, NUM_VECTORS);
+	normalise_Vector(stream_data, stream_res, NUM_VECTORS);
+	check_results(stream_data, stream_res);
+
+	auto end = high_resolution_clock::now();
+	auto total = duration_cast<microseconds>(end - start).count();
+	cout << "SIMD-only: " << total << " micros" << endl;
+
+
+	auto data2 = (float*)_aligned_malloc(SIZE * sizeof(float), 16);
+	auto result2 = (float*)_aligned_malloc(SIZE * sizeof(float), 16);
+
+	auto stream_data2 = (__m128*) data2;
+	auto stream_res2 = (__m128*) result2;
+
+	start = high_resolution_clock::now();
+
+	generate_data(data2, NUM_VECTORS);
+	normalise_Vector(stream_data2, stream_res2, NUM_VECTORS);
+	check_results(stream_data2, stream_res2);
+
+	end = high_resolution_clock::now();
+	total = duration_cast<microseconds>(end - start).count();
+	cout << "SIMD and OMP: " << total << " micros" << endl;
 
 	return 0;
 }

@@ -1,5 +1,7 @@
 ﻿  Practical4.cpp
-c:\users\40182166\documents\github\concurrent-of-parallel-systems-practicals\practical4\practical4.cpp(76): warning C4018: '<': signed/unsigned mismatch
-c:\users\40182166\documents\github\concurrent-of-parallel-systems-practicals\practical4\practical4.cpp(98): warning C4018: '<': signed/unsigned mismatch
+c:\users\40182166\documents\github\concurrent-of-parallel-systems-practicals\practical4\practical4.cpp(28): warning C4244: '=': conversion from 'unsigned int' to 'float', possible loss of data
+c:\users\40182166\documents\github\concurrent-of-parallel-systems-practicals\practical4\practical4.cpp(81): warning C4018: '<': signed/unsigned mismatch
+c:\users\40182166\documents\github\concurrent-of-parallel-systems-practicals\practical4\practical4.cpp(83): warning C4244: '=': conversion from 'unsigned int' to 'float', possible loss of data
+c:\users\40182166\documents\github\concurrent-of-parallel-systems-practicals\practical4\practical4.cpp(114): warning C4018: '<': signed/unsigned mismatch
   Practical4.vcxproj -> C:\Users\40182166\Documents\GitHub\Concurrent-Of-Parallel-Systems-Practicals\Practical4\Debug\Practical4.exe
   Practical4.vcxproj -> C:\Users\40182166\Documents\GitHub\Concurrent-Of-Parallel-Systems-Practicals\Practical4\Debug\Practical4.pdb (Partial PDB)
