@@ -1,0 +1,5 @@
+﻿  stdafx.cpp
+  Practical7.cpp
+f:\desktop\università\year 4\concurrent of parrallel systems\practicals\practical7\practical7.cpp(45): warning C4101: 'status': unreferenced local variable
+  Practical7.vcxproj -> F:\Desktop\Università\Year 4\Concurrent of Parrallel Systems\Practicals\Practical7\x64\Debug\Practical7.exe
+  Practical7.vcxproj -> F:\Desktop\Università\Year 4\Concurrent of Parrallel Systems\Practicals\Practical7\x64\Debug\Practical7.pdb (Partial PDB)
