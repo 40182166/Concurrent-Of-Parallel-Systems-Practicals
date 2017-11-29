@@ -1,4 +1,4 @@
 ﻿  Practical7.cpp
-c:\users\40182166\documents\github\concurrent-of-parallel-systems-practicals\practical7\practical7.cpp(124): warning C4267: 'argument': conversion from 'size_t' to 'cl_int', possible loss of data
+c:\users\40182166\documents\github\concurrent-of-parallel-systems-practicals\practical7\practical7.cpp(128): warning C4267: 'argument': conversion from 'size_t' to 'cl_int', possible loss of data
   Practical7.vcxproj -> C:\Users\40182166\Documents\GitHub\Concurrent-Of-Parallel-Systems-Practicals\Practical7\x64\Debug\Practical7.exe
   Practical7.vcxproj -> C:\Users\40182166\Documents\GitHub\Concurrent-Of-Parallel-Systems-Practicals\Practical7\x64\Debug\Practical7.pdb (Partial PDB)
